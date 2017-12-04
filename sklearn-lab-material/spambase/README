@@ -1,0 +1,23 @@
+SPAMBASE
+========
+
+Spam email classification.
+
+Training set instances: 3681
+Test set instances: 920
+Baseline Accuracy: 0.63152
+
+
+Data
+----
+Info about data format in the files: spambase.DOCUMENTATION, spambase.names
+
+
+Targets
+-------
+
+spam : int
+    1: spam
+    0: not spam
+
+
