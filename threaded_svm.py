@@ -11,15 +11,12 @@ class tSVC(threading.Thread):
 		threading.Thread.__init__(self)
 		self.threadID = threadID
 		self.name = name
-		self.ending_lock = threading.Lock()
-		self.ending_lock.acquire()
 		self.data = data
 		self.labels = labels
 		self.classifier = classifier
 
 	def run(self):
 		self.classifier.fit(self.data,self.labels)
-		self.ending_lock.release()
 
 	def predict(self,test_data):
 		return self.classifier.predict(test_data)
