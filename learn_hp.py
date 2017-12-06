@@ -68,7 +68,7 @@ def main():
 	train_target = np.array(train_target)
 	test_data = np.array(test_data)
 
-	x_train, x_val, y_train, y_val = train_test_split(train_data,train_labels,test_size=opt['test_size'])	
+	x_train, x_val, y_train, y_val = train_test_split(train_data,train_labels,test_size=0.2)
 
 	params = {}
 	keys = ['c','kernel','gamma']
@@ -80,7 +80,10 @@ def main():
 
 	clf = GridSearchCV(svc,params,n_jobs=opt['n_jobs'],cv=KFold(n_splits=opt['folds']).split(x_train))
 	clf.fit(x_train,y_train)
+
+	clf.predict(x_val)
 	
+
 
 
 if __name__ == '__main__':
