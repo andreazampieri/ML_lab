@@ -73,6 +73,17 @@ test_data = np.array(test_data)
 c = [1,10,100,1000]
 #gamma = [0.1,0.05,0.02,0.01]
 gamma = [1e-1, 1e-2, 1e-3, 1e-4]
+
+svm = SVC(C=10,gamma=0.1,kernel='rbf')
+svm.fit(train_data,train_target)
+
+pred = svm.predict(test_data)
+with open(test_targets_path,'w') as file:
+ 	for v in pred:
+ 		file.write(str(v)+'\n')
+
+quit()
+#######################
 svm = []
 
 idxs = np.array(range(len(train_data)))
@@ -83,7 +94,7 @@ n_folds = 5
 for c_i in c:
 	for gamma_i in gamma:
 		batch_idx = slice(idxs,i,n_folds)
-		svm.append(tSVC.tSVC(i,'',SVC(C=c_i,kernel='rbf',gamma=gamma_i),train_data[batch_idx],train_target[batch_idx]))
+		svm.append(tSVC.tSVC(SVC(C=c_i,kernel='rbf',gamma=gamma_i),train_data[batch_idx],train_target[batch_idx]))
 		i = (i+1)%n_folds
 
 print('Classifiers: {}'.format(len(svm)))
@@ -93,3 +104,15 @@ for clf in svm:
 
 for clf in svm:
 	clf.join()
+
+scores = []
+i=0
+for clf in svm:
+	batch_idx = slice(idxs,i,n_folds)
+	scores.append(metrics.accuracy_score(clf.predict(train_data[batch_idx]),train_target[batch_idx]))
+	i+=1
+
+best = max(scores)
+print(best)
+print(str(np.argmax(scores)))
+print(svm[np.argmax(scores)].get_params())

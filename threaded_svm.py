@@ -7,7 +7,7 @@ from sklearn.model_selection import KFold, cross_val_score
 
 class tSVC(threading.Thread):
 
-	def __init__ (self,threadID,name,classifier,data,labels):
+	def __init__ (self,classifier,data,labels,threadID=None,name=None):
 		threading.Thread.__init__(self)
 		self.threadID = threadID
 		self.name = name
