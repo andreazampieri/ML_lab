@@ -86,7 +86,7 @@ def main():
 		acc = metrics.accuracy_score(y_val,pred)
 
 		print(acc)
-		print(best_params_)
+		print(clf.best_params_)
 	
 
 
