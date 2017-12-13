@@ -32,6 +32,7 @@ def main():
 			opt[k] = opt[k][0]
 
 	opt['params'] = opt['params'].split(',')
+	opt['kernel'] = opt['kernel'].split(',')
 
 	base_path = opt['base_path']
 	train_data_path = base_path + opt['train_data_path']
