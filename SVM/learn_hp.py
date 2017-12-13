@@ -78,8 +78,7 @@ def main():
 		file.write('Params: '+str(clf.best_params_)+'\n')
 	
 	with open(bestparams_path,'w') as file:
-		for e in clf.best_params_:
-			k,v = e
+		for k,v in clf.best_params_.items():
 			file.write(str(k)+':'+str(v)+'\n')
 
 
