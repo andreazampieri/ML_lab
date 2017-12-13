@@ -31,6 +31,8 @@ def main():
 		if len(opt[k]) == 1:
 			opt[k] = opt[k][0]
 
+	opt['params'] = opt['params'].split(',')
+
 	base_path = opt['base_path']
 	train_data_path = base_path + opt['train_data_path']
 	train_labels_path = base_path + opt['train_labels_path']
