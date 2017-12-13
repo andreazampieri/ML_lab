@@ -18,36 +18,25 @@ def main():
 			k,v = line.strip().split(':')
 			opt[k] = v
 
-	if 'C' in opt:
-		key = 'C'
-		tmp = opt[key]
-		opt[key] = [float(_) for _ in tmp.split(',')]
+	opt['float'] = opt['float'].split(',')
+	opt['int'] = opt['int'].split(',')
 
-	if 'gamma' in opt:
-		key = 'gamma'
-		tmp = opt[key]
-		opt[key] = [float(_) for _ in tmp.split(',')]
+	for k in opt['float']:
+		opt[k] = [float(_) for _ in opt[k].split(',')]
+		if len(opt[k]) == 1:
+			opt[k] = opt[k][0]
 
-	if 'n_jobs' in opt:
-		key = 'n_jobs'
-		tmp = opt[key]
-		opt[key] = int(tmp)
-
-	if 'folds' in opt:
-		key = 'folds'
-		tmp = opt[key]
-		opt[key] = int(tmp)
-
-	if 'kernel' in opt:
-		key = 'kernel'
-		tmp = opt[key]
-		opt[key] = tmp.split(',')
+	for k in opt['int']:
+		opt[k] = [int(_) for _ in opt[k].split(',')]
+		if len(opt[k]) == 1:
+			opt[k] = opt[k][0]
 
 	base_path = opt['base_path']
 	train_data_path = base_path + opt['train_data_path']
 	train_labels_path = base_path + opt['train_labels_path']
 	test_data_path = base_path + opt['test_data_path']
-	test_labels_path = base_path + opt['test_labels_path']
+	results_path = base_path + opt['results']
+	bestparams_path = base_path + opt['bestparams']
 
 	with open(train_data_path) as file:
 		train_data = []
@@ -69,25 +58,29 @@ def main():
 	test_data = np.array(test_data)
 
 	params = {}
-	keys = ['C','kernel','gamma']
+	keys = opt['params']
 	for k in keys:
 		if k in opt:
 			params[k] = opt[k]
-
-	folds = 5
-	for i in range(folds):
-		svc = SVC()
-		x_train, x_val, y_train, y_val = train_test_split(train_data,train_labels,test_size=0.2)
-
-		clf = GridSearchCV(svc,params,n_jobs=opt['n_jobs'],cv=KFold(n_splits=opt['folds']).split(x_train))
-		clf.fit(x_train,y_train)
-
-		pred = clf.predict(x_val)
-		acc = metrics.accuracy_score(y_val,pred)
-
-		print(acc)
-		print(clf.best_params_)
 	
+
+	svc = SVC()
+	x_train, x_val, y_train, y_val = train_test_split(train_data,train_labels,test_size=0.2)
+
+	clf = GridSearchCV(svc,params,n_jobs=opt['n_jobs'],cv=KFold(n_splits=opt['folds']).split(x_train))
+	clf.fit(x_train,y_train)
+
+	pred = clf.predict(x_val)
+	acc = metrics.accuracy_score(y_val,pred)
+
+	with open(results_path,'w') as file:
+		file.write('Accuracy: '+str(acc)+'\n')
+		file.write('Params: '+str(clf.best_params_)+'\n')
+	
+	with open(bestparams_path,'w') as file:
+		for e in clf.best_params_:
+			k,v = e
+			file.write(str(k)+':'+str(v)+'\n')
 
 
 
