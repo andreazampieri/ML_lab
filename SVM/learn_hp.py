@@ -44,7 +44,7 @@ def main():
 	with open(train_data_path) as file:
 		train_data = []
 		for line in file:
-			train_data.append([int(_) for _ in line.strip().split(',')])
+			train_data.append([float(_) for _ in line.strip().split(',')])
 
 	with open(train_labels_path) as file:
 		train_labels = []
@@ -54,7 +54,7 @@ def main():
 	with open(test_data_path) as file:
 		test_data = []
 		for line in file:
-			test_data.append([int(_) for _ in line.strip().split(',')])
+			test_data.append([float(_) for _ in line.strip().split(',')])
 
 	train_data = np.array(train_data)
 	train_labels = np.array(train_labels)
@@ -83,6 +83,11 @@ def main():
 	with open(bestparams_path,'w') as file:
 		for k,v in clf.best_params_.items():
 			file.write(str(k)+':'+str(v)+'\n')
+
+		file.write('train_data_path:'+train_data_path+'\n')
+		file.write('train_labels_path:'+train_data_path+'\n')
+		file.write('test_data_path:'+train_data_path+'\n')
+		file.write('test_labels_path:'+train_data_path+'\n')
 
 
 
