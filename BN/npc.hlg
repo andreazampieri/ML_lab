@@ -1,4 +1,178 @@
-Fri Nov 17 13:23:41 2017
+Mon Jan 15 17:30:27 2018
+
+
+Moral links:
+
+    Marrying ATP2B4 and NAP1L1
+    Marrying PCCB and NAP1L1
+    Marrying MDK and PCCB
+    Marrying MDK and ATP2B4
+    Marrying MDK and NAP1L1
+    Marrying MDS1 and MDK
+    Marrying MDS1 and PCCB
+    Marrying MDS1 and ATP2B4
+    Marrying MDS1 and NAP1L1
+
+
+Triangulating prime component with 6 members:
+    NAP1L1, ATP2B4, PCCB, MDK, MDS1, AML
+This component is a clique of cost 64
+
+
+Total cost of triangulation for all prime components is 64
+
+
+Elimination sequence:
+
+    AML
+    MDS1
+    MDK
+    PCCB
+    ATP2B4
+    NAP1L1
+
+
+Cliques:
+
+Clique 1, 6 members, table size = 64:
+    NAP1L1, ATP2B4, PCCB, MDK, MDS1, AML
+
+Total clique table size: 64
+
+
+The junction forest:
+
+Creating junction tree with clique 1 as root ...
+
+
+Assignment of potentials to cliques:
+
+    Node NAP1L1 assigned to clique 1
+    Node ATP2B4 assigned to clique 1
+    Node PCCB assigned to clique 1
+    Node MDK assigned to clique 1
+    Node MDS1 assigned to clique 1
+    Node AML assigned to clique 1
+
+
+Checking conditional probability potentials:
+
+    No errors found
+
+
+Beliefs for chance nodes:
+
+    NAP1L1:
+	no         0,801724
+	yes        0,198276
+
+    ATP2B4:
+	no         0,836207
+	yes        0,163793
+
+    PCCB:
+	yes        0,801724
+	no         0,198276
+
+    MDK:
+	no         0,818966
+	yes        0,181034
+
+    MDS1:
+	yes        0,818966
+	no         0,181034
+
+    AML:
+	yes        0,313688
+	no         0,686312
+Mon Jan 15 17:33:42 2018
+
+
+Moral links:
+
+    Marrying ATP2B4 and NAP1L1
+    Marrying PCCB and NAP1L1
+    Marrying MDK and PCCB
+    Marrying MDK and ATP2B4
+    Marrying MDK and NAP1L1
+    Marrying MDS1 and MDK
+    Marrying MDS1 and PCCB
+    Marrying MDS1 and ATP2B4
+    Marrying MDS1 and NAP1L1
+
+
+Triangulating prime component with 6 members:
+    NAP1L1, ATP2B4, PCCB, MDK, MDS1, AML
+This component is a clique of cost 64
+
+
+Total cost of triangulation for all prime components is 64
+
+
+Elimination sequence:
+
+    AML
+    MDS1
+    MDK
+    PCCB
+    ATP2B4
+    NAP1L1
+
+
+Cliques:
+
+Clique 1, 6 members, table size = 64:
+    NAP1L1, ATP2B4, PCCB, MDK, MDS1, AML
+
+Total clique table size: 64
+
+
+The junction forest:
+
+Creating junction tree with clique 1 as root ...
+
+
+Assignment of potentials to cliques:
+
+    Node NAP1L1 assigned to clique 1
+    Node ATP2B4 assigned to clique 1
+    Node PCCB assigned to clique 1
+    Node MDK assigned to clique 1
+    Node MDS1 assigned to clique 1
+    Node AML assigned to clique 1
+
+
+Checking conditional probability potentials:
+
+    No errors found
+
+
+Beliefs for chance nodes:
+
+    NAP1L1:
+	no         0,801724
+	yes        0,198276
+
+    ATP2B4:
+	no         0,836207
+	yes        0,163793
+
+    PCCB:
+	yes        0,801724
+	no         0,198276
+
+    MDK:
+	no         0,818966
+	yes        0,181034
+
+    MDS1:
+	yes        0,818966
+	no         0,181034
+
+    AML:
+	yes        0,313688
+	no         0,686312
+Mon Jan 15 17:34:45 2018
 
 
 Moral links:

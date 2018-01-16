@@ -10,12 +10,8 @@ y = tf.placeholder(tf.float32, [None, 10])
 
 y_hat = tf.nn.softmax(tf.matmul(x,W)+b)
 
-# cross_entropy = tf.reduce_mean(-tf.reduce_sum(y * tf.log(y_hat), reduction_indices=[1]))
-# train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
-
-cross_entropy = tf.log(y_hat)
+cross_entropy = tf.reduce_mean(-tf.reduce_sum(y * tf.log(y_hat), reduction_indices=[1]))
 train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
-
 
 sess = tf.InteractiveSession()
 tf.global_variables_initializer().run()
@@ -24,3 +20,7 @@ for _ in range(1000):
   batch_xs, batch_ys = mnist.train.next_batch(100)
   sess.run(train_step, feed_dict={x: batch_xs, y: batch_ys})
 
+
+correct_prediction = tf.equal(tf.argmax(y_hat, 1), tf.argmax(y, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+print(sess.run(accuracy, feed_dict={x: mnist.test.images, y: mnist.test.labels}))

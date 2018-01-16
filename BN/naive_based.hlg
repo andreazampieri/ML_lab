@@ -1,4 +1,240 @@
-Fri Nov 17 13:24:51 2017
+Mon Jan 15 17:30:25 2018
+
+
+Moral links:
+
+
+
+Triangulating prime component with 2 members:
+    MDS1, AML
+This component is a clique of cost 4
+
+Triangulating prime component with 2 members:
+    MDK, AML
+This component is a clique of cost 4
+
+Triangulating prime component with 2 members:
+    PCCB, AML
+This component is a clique of cost 4
+
+Triangulating prime component with 2 members:
+    ATP2B4, AML
+This component is a clique of cost 4
+
+Triangulating prime component with 2 members:
+    NAP1L1, AML
+This component is a clique of cost 4
+
+
+Total cost of triangulation for all prime components is 20
+
+
+Elimination sequence:
+
+    MDS1
+    MDK
+    PCCB
+    ATP2B4
+    NAP1L1
+    AML
+
+
+Cliques:
+
+Clique 5, 2 members, table size = 4:
+    AML, NAP1L1
+
+Clique 4, 2 members, table size = 4:
+    AML, ATP2B4
+
+Clique 3, 2 members, table size = 4:
+    AML, PCCB
+
+Clique 2, 2 members, table size = 4:
+    AML, MDK
+
+Clique 1, 2 members, table size = 4:
+    AML, MDS1
+
+Total clique table size: 20
+
+
+The junction forest:
+
+Creating junction tree with clique 5 as root ...
+
+Cliques 4 and 5 linked, separator has 1 member and table size = 2:
+    AML
+
+Cliques 3 and 5 linked, separator has 1 member and table size = 2:
+    AML
+
+Cliques 2 and 5 linked, separator has 1 member and table size = 2:
+    AML
+
+Cliques 1 and 5 linked, separator has 1 member and table size = 2:
+    AML
+
+
+Assignment of potentials to cliques:
+
+    Node NAP1L1 assigned to clique 5
+    Node ATP2B4 assigned to clique 4
+    Node PCCB assigned to clique 3
+    Node MDK assigned to clique 2
+    Node MDS1 assigned to clique 1
+    Node AML assigned to clique 5
+
+
+Checking conditional probability potentials:
+
+    No errors found
+
+
+Beliefs for chance nodes:
+
+    NAP1L1:
+	no         0,801724
+	yes        0,198276
+
+    ATP2B4:
+	no         0,836207
+	yes        0,163793
+
+    PCCB:
+	yes        0,801724
+	no         0,198276
+
+    MDK:
+	no         0,818966
+	yes        0,181034
+
+    MDS1:
+	yes        0,818966
+	no         0,181034
+
+    AML:
+	yes        0,353448
+	no         0,646552
+Mon Jan 15 17:33:32 2018
+
+
+Moral links:
+
+
+
+Triangulating prime component with 2 members:
+    MDS1, AML
+This component is a clique of cost 4
+
+Triangulating prime component with 2 members:
+    MDK, AML
+This component is a clique of cost 4
+
+Triangulating prime component with 2 members:
+    PCCB, AML
+This component is a clique of cost 4
+
+Triangulating prime component with 2 members:
+    ATP2B4, AML
+This component is a clique of cost 4
+
+Triangulating prime component with 2 members:
+    NAP1L1, AML
+This component is a clique of cost 4
+
+
+Total cost of triangulation for all prime components is 20
+
+
+Elimination sequence:
+
+    MDS1
+    MDK
+    PCCB
+    ATP2B4
+    NAP1L1
+    AML
+
+
+Cliques:
+
+Clique 5, 2 members, table size = 4:
+    AML, NAP1L1
+
+Clique 4, 2 members, table size = 4:
+    AML, ATP2B4
+
+Clique 3, 2 members, table size = 4:
+    AML, PCCB
+
+Clique 2, 2 members, table size = 4:
+    AML, MDK
+
+Clique 1, 2 members, table size = 4:
+    AML, MDS1
+
+Total clique table size: 20
+
+
+The junction forest:
+
+Creating junction tree with clique 5 as root ...
+
+Cliques 4 and 5 linked, separator has 1 member and table size = 2:
+    AML
+
+Cliques 3 and 5 linked, separator has 1 member and table size = 2:
+    AML
+
+Cliques 2 and 5 linked, separator has 1 member and table size = 2:
+    AML
+
+Cliques 1 and 5 linked, separator has 1 member and table size = 2:
+    AML
+
+
+Assignment of potentials to cliques:
+
+    Node NAP1L1 assigned to clique 5
+    Node ATP2B4 assigned to clique 4
+    Node PCCB assigned to clique 3
+    Node MDK assigned to clique 2
+    Node MDS1 assigned to clique 1
+    Node AML assigned to clique 5
+
+
+Checking conditional probability potentials:
+
+    No errors found
+
+
+Beliefs for chance nodes:
+
+    NAP1L1:
+	no         0,801724
+	yes        0,198276
+
+    ATP2B4:
+	no         0,836207
+	yes        0,163793
+
+    PCCB:
+	yes        0,801724
+	no         0,198276
+
+    MDK:
+	no         0,818966
+	yes        0,181034
+
+    MDS1:
+	yes        0,818966
+	no         0,181034
+
+    AML:
+	yes        0,353448
+	no         0,646552
+Mon Jan 15 17:34:49 2018
 
 
 Moral links:
