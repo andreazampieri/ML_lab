@@ -105,8 +105,8 @@ def main():
 	correctness = tf.equal(tf.argmax(y_hat,1),tf.argmax(y,1))
 	accuracy = tf.reduce_mean(tf.cast(correctness,tf.float32))
 
-	n_epochs = 10
-	batch_size = 1000
+	n_epochs = 20
+	batch_size = 200
 	batch_number = int(ceil(len(train_data)/batch_size))
 	sess = tf.Session()
 	sess.run(tf.global_variables_initializer())
