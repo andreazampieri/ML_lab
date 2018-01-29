@@ -48,7 +48,7 @@ def main():
 
 	test_labels = svc.predict(test_data)
 
-	with open(test_labels_path,'r') as file:
+	with open(test_labels_path,'w') as file:
 		for v in test_labels:
 			file.write(str(v)+'\n')
 

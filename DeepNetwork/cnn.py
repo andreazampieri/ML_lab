@@ -68,9 +68,9 @@ def main():
 	# 	24 filters
 	
 	keep_prob = tf.placeholder(tf.float32)
-	conv1_nfeats = 128
-	patch_height = 8
-	patch_width = 8
+	conv1_nfeats = 200
+	patch_height = 6
+	patch_width = 6
 	conv1_w = w_var([patch_height,patch_width,1,conv1_nfeats])
 	conv1_b = b_var([conv1_nfeats])
 
@@ -80,7 +80,7 @@ def main():
 
 	# after the first pooling, the input has shape [batch_size, 8,4, conv1_nfeats]
 	# [,8,4,24]
-	conv2_nfeats = 256
+	conv2_nfeats = 400
 	conv2_w = w_var([4,4,conv1_nfeats,conv2_nfeats])
 	conv2_b = b_var([conv2_nfeats])
 
@@ -90,7 +90,7 @@ def main():
 	# pool2 has shape [,4,2,48]; 4*2*48 = 384
 	# 2 fully connected layers of size (resp) 100 and 26
 
-	fcl1_dim = 128
+	fcl1_dim = 1000
 	fcl1_w = w_var([4*2*conv2_nfeats,fcl1_dim])
 	fcl1_b = b_var([fcl1_dim])
 
@@ -135,9 +135,9 @@ def main():
 			sess.run(train_opt,feed_dict={x:train_data[curr_idx],y:train_labels[curr_idx],keep_prob:0.5})
 
 	# accuracy on training set
-	for i in range(batch_number):
-		curr_idx = get_batch(idxs,i,batch_size)
-		print(sess.run(accuracy,feed_dict={x: train_data[curr_idx], y:train_labels[curr_idx], keep_prob: 0.5}))
+	# for i in range(batch_number):
+	# 	curr_idx = get_batch(idxs,i,batch_size)
+	# 	print(sess.run(accuracy,feed_dict={x: train_data[curr_idx], y:train_labels[curr_idx], keep_prob: 0.5}))
 
 	results = []
 	idxs = list(range(len(test_data)))
@@ -146,8 +146,9 @@ def main():
 		curr_idx = get_batch(idxs,i,batch_size)
 		results.append(sess.run(predict,feed_dict={x:test_data[curr_idx],keep_prob:0.5}))
 	with open(test_labels_path,'w') as file:
-		for value in results:
-			file.write(chr(value+ord('a'))+'\n')
+		for batch_res in results:
+			for value in batch_res:
+				file.write(chr(value+ord('a'))+'\n')
 
 
 if __name__ == '__main__':

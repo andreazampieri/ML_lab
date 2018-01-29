@@ -1,0 +1,7 @@
+C:1000
+gamma:0.0001
+kernel:rbf
+train_data_path:sklearn-lab-material/spambase/train-data.csv
+train_labels_path:sklearn-lab-material/spambase/train-targets.csv
+test_data_path:sklearn-lab-material/spambase/test-data.csv
+test_labels_path:sklearn-lab-material/spambase/test-targets.csv

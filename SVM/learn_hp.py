@@ -64,8 +64,11 @@ def main():
 	keys = opt['params']
 	for k in keys:
 		if k in opt:
-			params[k] = opt[k]
-	
+			try:
+				if len(opt[k]) > 0:
+					params[k] = opt[k]
+			except TypeError:
+				params[k] = [opt[k]]
 
 	svc = SVC()
 	x_train, x_val, y_train, y_val = train_test_split(train_data,train_labels,test_size=0.2)
