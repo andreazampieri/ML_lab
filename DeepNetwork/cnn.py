@@ -68,9 +68,9 @@ def main():
 	# 	24 filters
 	
 	keep_prob = tf.placeholder(tf.float32)
-	conv1_nfeats = 200
-	patch_height = 6
-	patch_width = 6
+	conv1_nfeats = 256
+	patch_height = 5
+	patch_width = 5
 	conv1_w = w_var([patch_height,patch_width,1,conv1_nfeats])
 	conv1_b = b_var([conv1_nfeats])
 
@@ -80,8 +80,10 @@ def main():
 
 	# after the first pooling, the input has shape [batch_size, 8,4, conv1_nfeats]
 	# [,8,4,24]
-	conv2_nfeats = 400
-	conv2_w = w_var([4,4,conv1_nfeats,conv2_nfeats])
+	patch_height = 4
+	patch_width = 4
+	conv2_nfeats = 512
+	conv2_w = w_var([patch_height,patch_width,conv1_nfeats,conv2_nfeats])
 	conv2_b = b_var([conv2_nfeats])
 
 	#conv2 = tf.nn.relu(conv2d(pool1,conv2_w)+conv2_b)
@@ -90,7 +92,7 @@ def main():
 	# pool2 has shape [,4,2,48]; 4*2*48 = 384
 	# 2 fully connected layers of size (resp) 100 and 26
 
-	fcl1_dim = 1000
+	fcl1_dim = 1024
 	fcl1_w = w_var([4*2*conv2_nfeats,fcl1_dim])
 	fcl1_b = b_var([fcl1_dim])
 
@@ -100,7 +102,7 @@ def main():
 
 	# fcl2_w = w_var([fcl1_dim,26])
 	# fcl2_b = b_var([26])
-	fcl2_dim = 128
+	fcl2_dim = 512
 	fcl2_w = w_var([fcl1_dim,fcl2_dim])
 	fcl2_b = b_var([fcl2_dim])
 	fcl2 = tf.nn.relu(tf.matmul(dropout_fcl1,fcl2_w)+fcl2_b)
