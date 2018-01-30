@@ -122,7 +122,7 @@ def main():
 	predict = tf.argmax(y_hat,1)
 
 	# params for the execution
-	n_epochs = 15
+	n_epochs = 25
 	batch_size = 400
 	batch_number = int(ceil(len(train_data)/batch_size))
 	sess = tf.Session()
@@ -144,7 +144,7 @@ def main():
 	# predict
 	for i in range(batch_number):
 		curr_idx = get_batch(idxs,i,batch_size)
-		results.append(sess.run(predict,feed_dict={x:test_data[curr_idx],keep_prob:0.5}))
+		results.append(sess.run(predict,feed_dict={x:test_data[curr_idx],keep_prob:1.0}))
 	with open(test_labels_path,'w') as file:
 		for batch_res in results:
 			for value in batch_res:
