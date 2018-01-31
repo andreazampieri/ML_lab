@@ -124,7 +124,7 @@ def main():
 	predict = tf.argmax(y_hat,1)
 
 	# params for the execution
-	n_epochs = 25
+	n_epochs = 15
 	batch_size = 400
 	batch_number = int(ceil(len(train_data)/batch_size))
 	sess = tf.Session()
