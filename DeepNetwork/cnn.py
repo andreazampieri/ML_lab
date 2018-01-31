@@ -108,7 +108,7 @@ def main():
 	#fcl2 = tf.nn.relu(tf.matmul(dropout_fcl1,fcl2_w)+fcl2_b)
 	# dropout_fcl2 = tf.nn.dropout(fcl2,keep_prob)
 
-	output = tf.matmul(flc1,fcl2_w)+fcl2_b#tf.matmul(dropout_fcl1,fcl2_w) + fcl2_b
+	output = tf.matmul(fcl1,fcl2_w)+fcl2_b#tf.matmul(dropout_fcl1,fcl2_w) + fcl2_b
 	y_hat = tf.nn.softmax(output)
 	# fcl3_w = w_var([fcl2_dim,26])
 	# fcl3_b = b_var([26])
