@@ -68,7 +68,7 @@ def main():
 	# 	24 filters
 	
 	keep_prob = tf.placeholder(tf.float32)
-	conv1_nfeats = 256
+	conv1_nfeats = 64
 	patch_height = 5
 	patch_width = 5
 	conv1_w = w_var([patch_height,patch_width,1,conv1_nfeats])
@@ -82,7 +82,7 @@ def main():
 	# [,8,4,24]
 	patch_height = 4
 	patch_width = 4
-	conv2_nfeats = 512
+	conv2_nfeats = 128
 	conv2_w = w_var([patch_height,patch_width,conv1_nfeats,conv2_nfeats])
 	conv2_b = b_var([conv2_nfeats])
 
@@ -100,20 +100,20 @@ def main():
 	fcl1 = tf.nn.relu(tf.matmul(pool2_flat,fcl1_w)+fcl1_b)
 	dropout_fcl1 = tf.nn.dropout(fcl1,keep_prob)
 
-	# fcl2_w = w_var([fcl1_dim,26])
-	# fcl2_b = b_var([26])
-	fcl2_dim = 512
-	fcl2_w = w_var([fcl1_dim,fcl2_dim])
-	fcl2_b = b_var([fcl2_dim])
-	fcl2 = tf.nn.relu(tf.matmul(dropout_fcl1,fcl2_w)+fcl2_b)
-	dropout_fcl2 = tf.nn.dropout(fcl2,keep_prob)
+	fcl2_w = w_var([fcl1_dim,26])
+	fcl2_b = b_var([26])
+	# fcl2_dim = 256
+	# fcl2_w = w_var([fcl1_dim,fcl2_dim])
+	# fcl2_b = b_var([fcl2_dim])
+	#fcl2 = tf.nn.relu(tf.matmul(dropout_fcl1,fcl2_w)+fcl2_b)
+	# dropout_fcl2 = tf.nn.dropout(fcl2,keep_prob)
 
-	# output = tf.matmul(dropout_fcl1,fcl2_w) + fcl2_b
-	# y_hat = tf.nn.softmax(output)
-	fcl3_w = w_var([fcl2_dim,26])
-	fcl3_b = b_var([26])
-	output = tf.matmul(dropout_fcl2,fcl3_w) + fcl3_b
+	output = tf.matmul(flc1,fcl2_w)+fcl2_b#tf.matmul(dropout_fcl1,fcl2_w) + fcl2_b
 	y_hat = tf.nn.softmax(output)
+	# fcl3_w = w_var([fcl2_dim,26])
+	# fcl3_b = b_var([26])
+	# output = tf.matmul(dropout_fcl2,fcl3_w) + fcl3_b
+	# y_hat = tf.nn.softmax(output)
 
 	#loss function and optimizer
 	cross_entropy = tf.reduce_mean(-tf.reduce_sum(y*tf.log(y_hat),reduction_indices=[1]))
