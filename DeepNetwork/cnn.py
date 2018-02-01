@@ -68,7 +68,7 @@ def main():
 	# 	24 filters
 	
 	keep_prob = tf.placeholder(tf.float32)
-	conv1_nfeats = 64
+	conv1_nfeats = 128
 	patch_height = 4
 	patch_width = 4
 	conv1_w = w_var([patch_height,patch_width,1,conv1_nfeats])
@@ -82,7 +82,7 @@ def main():
 	# [,8,4,24]
 	patch_height = 4
 	patch_width = 4
-	conv2_nfeats = 128
+	conv2_nfeats = 256
 	conv2_w = w_var([patch_height,patch_width,conv1_nfeats,conv2_nfeats])
 	conv2_b = b_var([conv2_nfeats])
 
@@ -124,7 +124,7 @@ def main():
 	predict = tf.argmax(y_hat,1)
 
 	# params for the execution
-	n_epochs = 15
+	n_epochs = 20
 	batch_size = 400
 	batch_number = int(ceil(len(train_data)/batch_size))
 	sess = tf.Session()
