@@ -69,8 +69,8 @@ def main():
 	
 	keep_prob = tf.placeholder(tf.float32)
 	conv1_nfeats = 64
-	patch_height = 5
-	patch_width = 5
+	patch_height = 4
+	patch_width = 4
 	conv1_w = w_var([patch_height,patch_width,1,conv1_nfeats])
 	conv1_b = b_var([conv1_nfeats])
 
@@ -92,7 +92,7 @@ def main():
 	# pool2 has shape [,4,2,48]; 4*2*48 = 384
 	# 2 fully connected layers of size (resp) 100 and 26
 
-	fcl1_dim = 1024
+	fcl1_dim = 512
 	fcl1_w = w_var([4*2*conv2_nfeats,fcl1_dim])
 	fcl1_b = b_var([fcl1_dim])
 
@@ -102,7 +102,7 @@ def main():
 
 	# fcl2_w = w_var([fcl1_dim,26])
 	# fcl2_b = b_var([26])
-	fcl2_dim = 256
+	fcl2_dim = 128
 	fcl2_w = w_var([fcl1_dim,fcl2_dim])
 	fcl2_b = b_var([fcl2_dim])
 	fcl2 = tf.nn.relu(tf.matmul(dropout_fcl1,fcl2_w)+fcl2_b)
