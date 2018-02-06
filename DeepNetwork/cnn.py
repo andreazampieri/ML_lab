@@ -146,7 +146,7 @@ def main():
 	# predict
 	for i in range(batch_number):
 		curr_idx = get_batch(idxs,i,batch_size)
-		results.append(sess.run(predict,feed_dict={x:test_data[curr_idx],keep_prob:1.0}))
+		results.append(sess.run(predict,feed_dict={x:test_data[curr_idx],keep_prob:0.5}))
 	with open(test_labels_path,'w') as file:
 		for batch_res in results:
 			for value in batch_res:
