@@ -75,7 +75,7 @@ def main():
 	conv1_b = b_var([conv1_nfeats])
 
 	#conv1 = tf.nn.relu(conv2d(x_rshp,conv1_w)+conv1_b)
-	conv1 = tf.nn.dropout(tf.nn.relu(conv2d(x_rshp,conv1_w)+conv1_b),1)
+	conv1 = tf.nn.dropout(tf.nn.relu(conv2d(x_rshp,conv1_w)+conv1_b),keep_prob)
 	pool1 = max_pool_2x2(conv1)
 
 	# after the first pooling, the input has shape [batch_size, 8,4, conv1_nfeats]
@@ -87,7 +87,7 @@ def main():
 	conv2_b = b_var([conv2_nfeats])
 
 	#conv2 = tf.nn.relu(conv2d(pool1,conv2_w)+conv2_b)
-	conv2 = tf.nn.dropout(tf.nn.relu(conv2d(pool1,conv2_w)+conv2_b),1)
+	conv2 = tf.nn.dropout(tf.nn.relu(conv2d(pool1,conv2_w)+conv2_b),keep_prob)
 	pool2 = max_pool_2x2(conv2)
 	# pool2 has shape [,4,2,48]; 4*2*48 = 384
 	# 2 fully connected layers of size (resp) 100 and 26
