@@ -68,52 +68,52 @@ def main():
 	# 	24 filters
 	
 	keep_prob = tf.placeholder(tf.float32)
-	conv1_nfeats = 128
 	patch_height = 4
 	patch_width = 4
+	conv1_nfeats = 64
 	conv1_w = w_var([patch_height,patch_width,1,conv1_nfeats])
 	conv1_b = b_var([conv1_nfeats])
 
 	#conv1 = tf.nn.relu(conv2d(x_rshp,conv1_w)+conv1_b)
-	conv1 = tf.nn.dropout(tf.nn.relu(conv2d(x_rshp,conv1_w)+conv1_b),keep_prob)
+	conv1 = tf.nn.dropout(tf.nn.relu(conv2d(x_rshp,conv1_w)+conv1_b),1)
 	pool1 = max_pool_2x2(conv1)
 
 	# after the first pooling, the input has shape [batch_size, 8,4, conv1_nfeats]
 	# [,8,4,24]
 	patch_height = 4
 	patch_width = 4
-	conv2_nfeats = 256
+	conv2_nfeats = 128
 	conv2_w = w_var([patch_height,patch_width,conv1_nfeats,conv2_nfeats])
 	conv2_b = b_var([conv2_nfeats])
 
 	#conv2 = tf.nn.relu(conv2d(pool1,conv2_w)+conv2_b)
-	conv2 = tf.nn.dropout(tf.nn.relu(conv2d(pool1,conv2_w)+conv2_b),keep_prob)
+	conv2 = tf.nn.dropout(tf.nn.relu(conv2d(pool1,conv2_w)+conv2_b),1)
 	pool2 = max_pool_2x2(conv2)
 	# pool2 has shape [,4,2,48]; 4*2*48 = 384
 	# 2 fully connected layers of size (resp) 100 and 26
 
-	fcl1_dim = 512
+	fcl1_dim = 1024
 	fcl1_w = w_var([4*2*conv2_nfeats,fcl1_dim])
 	fcl1_b = b_var([fcl1_dim])
 
 	pool2_flat = tf.reshape(pool2,[-1,4*2*conv2_nfeats])
 	fcl1 = tf.nn.relu(tf.matmul(pool2_flat,fcl1_w)+fcl1_b)
-	dropout_fcl1 = tf.nn.dropout(fcl1,keep_prob)
+	dropout_fcl1 = tf.nn.dropout(fcl1,1)
 
 	# fcl2_w = w_var([fcl1_dim,26])
 	# fcl2_b = b_var([26])
-	fcl2_dim = 128
+	fcl2_dim = 26
 	fcl2_w = w_var([fcl1_dim,fcl2_dim])
 	fcl2_b = b_var([fcl2_dim])
 	fcl2 = tf.nn.relu(tf.matmul(dropout_fcl1,fcl2_w)+fcl2_b)
 	dropout_fcl2 = tf.nn.dropout(fcl2,keep_prob)
 
-	# output = tf.matmul(fcl1,fcl2_w)+fcl2_b#tf.matmul(dropout_fcl1,fcl2_w) + fcl2_b
-	# y_hat = tf.nn.softmax(output)
-	fcl3_w = w_var([fcl2_dim,26])
-	fcl3_b = b_var([26])
-	output = tf.matmul(dropout_fcl2,fcl3_w) + fcl3_b
+	output = tf.matmul(dropout_fcl1,fcl2_w) + fcl2_b
 	y_hat = tf.nn.softmax(output)
+	# fcl3_w = w_var([fcl2_dim,26])
+	# fcl3_b = b_var([26])
+	# output = tf.matmul(dropout_fcl2,fcl3_w) + fcl3_b
+	# y_hat = tf.nn.softmax(output)
 
 	#loss function and optimizer
 	cross_entropy = tf.reduce_mean(-tf.reduce_sum(y*tf.log(y_hat),reduction_indices=[1]))
