@@ -5,7 +5,7 @@ Classify handwritten characters from 16x8 bitmap images.
 
 Training set instances: 41721
 Test set instances: 10431
-Baseline Accuracy: 0.09673
+Baseline Accuracy: 0.75
 
 
 Data
