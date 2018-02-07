@@ -17,7 +17,15 @@ def split_test_validation(data,n_folds,fold_index):
 	val_set_dim = int(len(data)/n_folds)
 	start_val = val_set_dim * fold_index
 	end_val = start_val + val_set_dim
-	return np.concatenate(data[:start_val],data[end_val:]),data[start_val,end_val]
+	train = []
+	validation = []
+	for i in range(start_val):
+		train.append(data[i])
+	for i in range(start_val,end_val):
+		validation.append(data[i])
+	for i in range(end_val,len(data)):
+		train.append(data[i])
+	return train,validation
 
 def compute_accuracies(y,y_hat):
 	counter = 0
@@ -142,7 +150,7 @@ def main():
 	batch_number = int(ceil(len(train_data)/batch_size))
 
 	n_folds = 3
-	idxs = np.array(list(range(len(train_data))))[0]
+	idxs = np.array(list(range(len(train_data))))
 	np.random.shuffle(idxs)
 	accuracies = []
 	for i in range(n_folds):
@@ -152,7 +160,7 @@ def main():
 			for e in range(n_epochs):
 				np.random.shuffle(train_idxs)
 				for j in range(batch_number):
-					curr_idx = get_batch(train_idxs,batch_size)
+					curr_idx = get_batch(train_idxs,batch_size,j)
 					sess.run(train_opt,feed_dict={x:train_data[curr_idx],y:train_labels[curr_idx],keep_prob:0.5})
 
 		val_labels_hat = sess.run(predict,feed_dict={x:train_data[val_idxs],keep_prob:1})
