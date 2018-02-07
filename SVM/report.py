@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import argparse
 import numpy as np
-from sklearn.model_selection import train_test_split, GridSearchCV, KFold
+from sklearn.model_selection import train_test_split, GridSearchCV, KFold, cross_val_score, learning_curve
 from sklearn import metrics
 from sklearn.svm import SVC
+import matplotlib.pyplot as plt
 
 
 #learn_hp.py config_file
@@ -69,8 +70,53 @@ def main():
 					params[k] = opt[k]
 			except TypeError:
 				params[k] = [opt[k]]
+	kf = KFold(n_splits=4,shuffle=True, random_state=10)
+	gamma_values = opt['gamma']
+	c_values = opt['C']
+	scores = []
+	for c in c_values:
+		for gamma in gamma_values:
+			classifier = SVC(C=c,gamma=gamma,kernel='rbf')
+			scores.append(cross_val_score(clf,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=['accuracy','precision_weighted','recall_weighted','f1_weighted'])	)
 
-	svc = SVC()
+	acc = [s[0] for s in scores]
+	prec = [s[1] for s in scores]
+	rec = [s[2] for s in scores]
+	f1 = [s[3] for s in scores]
+
+	index_of_best = np.argmax(acc)
+	best_c = c_values[int(index_of_best / len(c_values))]
+	best_gamma = gamma_values[index_of_best % len(gamma_values)]
+
+	best_svc = SVC(C=best_c,gamma=best_gamma,kernel='rbf')
+
+	train_sizes, train_scores, test_scores = learning_curve(best_svc, train_data, train_labels, scoring='accuracy')
+
+
+	plt.figure()
+	plt.title("Learning curve")
+	plt.xlabel("Training examples")
+	plt.ylabel("Score")
+	plt.grid()
+	train_scores_mean = np.mean(train_scores, axis=1)
+	train_scores_std = np.std(train_scores, axis=1)
+	test_scores_mean = np.mean(test_scores, axis=1)
+	test_scores_std = np.std(test_scores, axis=1)
+	plt.plot(train_sizes, train_scores_mean, 'o-', color="r", label="learning_curve")
+
+	plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
+	                 train_scores_mean + train_scores_std, alpha=0.1, color="r")
+
+
+	plt.plot(train_sizes, test_scores_mean, 'o-', color="g", label="Cross-validation score")
+
+	plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
+	                 test_scores_mean + test_scores_std, alpha=0.1, color="g")
+
+	plt.legend()
+	plt.show()
+	quit()
+	###############
 	x_train, x_val, y_train, y_val = train_test_split(train_data,train_labels,test_size=0.2)
 
 	clf = GridSearchCV(svc,params,n_jobs=opt['n_jobs'],cv=KFold(n_splits=opt['folds']).split(x_train))
@@ -78,6 +124,8 @@ def main():
 
 	pred = clf.predict(x_val)
 	acc = metrics.accuracy_score(y_val,pred)
+	f1 = metrics.f1_score(y_val,pred)
+	rec = metrics.precision(y_val,pred)
 
 	with open(results_path,'w') as file:
 		file.write('Params: '+str(clf.best_params_)+'\n')
