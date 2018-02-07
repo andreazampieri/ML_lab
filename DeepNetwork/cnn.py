@@ -145,14 +145,17 @@ def main():
 	idxs = list(range(len(test_data)))
 	batch_number = int(ceil(len(test_data)/batch_size))
 	# predict
-	for i in range(batch_number):
-		curr_idx = get_batch(idxs,i,batch_size)
-		results.append(sess.run(predict,feed_dict={x:test_data[curr_idx],keep_prob:1}))
+	# for i in range(batch_number):
+	# 	curr_idx = get_batch(idxs,i,batch_size)
+	# 	results.append(sess.run(predict,feed_dict={x:test_data[curr_idx],keep_prob:1}))
+	# with open(test_labels_path,'w') as file:
+	# 	for batch_res in results:
+	# 		for value in batch_res:
+	# 			file.write(chr(value+ord('a'))+'\n')
+	results = sess.run(predict,feed_dict={x:test_data,keep_prob:1})
 	with open(test_labels_path,'w') as file:
-		for batch_res in results:
-			for value in batch_res:
-				file.write(chr(value+ord('a'))+'\n')
-
+		for value in results:
+			file.write(chr(value+ord('a'))+'\n')
 
 if __name__ == '__main__':
 	main()
