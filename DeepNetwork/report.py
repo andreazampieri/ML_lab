@@ -151,7 +151,7 @@ def main():
 			sess.run(tf.global_variables_initializer())
 			for e in range(n_epochs):
 				np.random.shuffle(train_idxs)
-				for j in range(batch_number)
+				for j in range(batch_number):
 					curr_idx = get_batch(train_idxs,batch_size)
 					sess.run(train_opt,feed_dict={x:train_data[curr_idx],y:train_labels[curr_idx],keep_prob:0.5})
 
@@ -165,7 +165,7 @@ def main():
 			file.write(str(v)+',')
 		
 	## END CHANGES
-
+	quit()
 	# params for the execution
 	sess = tf.Session()
 	sess.run(tf.global_variables_initializer())
