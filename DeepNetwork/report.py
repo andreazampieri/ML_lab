@@ -142,7 +142,7 @@ def main():
 	batch_number = int(ceil(len(train_data)/batch_size))
 
 	n_folds = 3
-	idxs = np.array(list(range(len(train_data))))
+	idxs = np.array(list(range(len(train_data))))[0]
 	np.random.shuffle(idxs)
 	accuracies = []
 	for i in range(n_folds):
