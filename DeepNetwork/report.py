@@ -147,7 +147,7 @@ def main():
 	accuracies = []
 	for i in range(n_folds):
 		train_idxs,val_idxs = split_test_validation(idxs,n_folds,i)
-		with tf.Session() as sess():
+		with tf.Session() as sess:
 			sess.run(tf.global_variables_initializer())
 			for e in range(n_epochs):
 				np.random.shuffle(train_idxs)
