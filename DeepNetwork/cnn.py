@@ -125,7 +125,7 @@ def main():
 
 	# params for the execution
 	n_epochs = 15
-	batch_size = 400
+	batch_size = 200
 	batch_number = int(ceil(len(train_data)/batch_size))
 	sess = tf.Session()
 	sess.run(tf.global_variables_initializer())
