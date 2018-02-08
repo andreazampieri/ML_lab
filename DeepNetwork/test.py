@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+from math import ceil
 
 def one_hot_encoding(char):
 	ohe = [0]*26
@@ -69,8 +70,6 @@ cross_entropy = tf.reduce_mean(-tf.reduce_sum(y * tf.log(y_hat), reduction_indic
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 predict = tf.argmax(y_hat,1)
 
-sess = tf.Session()
-sess.run(global_variables_initializer())
 idxs = list(range(len(train_data)))
 n_epochs = 15
 batch_size = 200
@@ -89,7 +88,7 @@ with open(test_labels_path,'w') as file:
 	for v in pred:
 		file.write(chr(v+ord('a'))+'\n')
 
-		
+
 ##########################################################################################
 
 # import tensorflow as tf
