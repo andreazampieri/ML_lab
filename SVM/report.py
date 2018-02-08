@@ -73,7 +73,7 @@ def main():
 	kf = KFold(n_splits=4,shuffle=True, random_state=10)
 	gamma_values = opt['gamma']
 	c_values = opt['C']
-	dd = defaultdict(lambda:dd)
+	dd = lambda:defaultdict(dd)
 	scores = dd()
 	score_param=['accuracy','precision_weighted','recall_weighted','f1_weighted']
 	for c in c_values:
