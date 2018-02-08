@@ -6,6 +6,7 @@ from sklearn import metrics
 from sklearn.svm import SVC
 import matplotlib.pyplot as plt
 from collections import defaultdict
+from pprint import pprint
 
 #learn_hp.py config_file
 def main():
@@ -74,19 +75,23 @@ def main():
 	gamma_values = opt['gamma']
 	c_values = opt['C']
 	dd = lambda:defaultdict(dd)
-	scores = dd()
+	#scores = dd()
+	logfile = open('log_scores','w')
+	scores = []
 	score_param=['accuracy','precision_weighted','recall_weighted','f1_weighted']
 	for c in c_values:
 		for gamma in gamma_values:
 			for s in score_param:
 				classifier = SVC(C=c,gamma=gamma,kernel='rbf')
-				scores[c][gamma][s]=cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=s)
+				logfile.write(cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=s))
+				logfile.write('\n')
 				print('.')
 
-	acc = [s['acc'] for s in scores]
-	prec = [s['prec'] for s in scores]
-	rec = [s['rec'] for s in scores]
-	f1 = [s['f1'] for s in scores]
+	# acc = [s['acc'] for s in scores]
+	# prec = [s['prec'] for s in scores]
+	# rec = [s['rec'] for s in scores]
+	# f1 = [s['f1'] for s in scores]
+
 
 	index_of_best = np.argmax(acc)
 	best_c = c_values[int(index_of_best / len(c_values))]
