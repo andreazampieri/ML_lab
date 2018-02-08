@@ -77,12 +77,12 @@ def main():
 	for c in c_values:
 		for gamma in gamma_values:
 			classifier = SVC(C=c,gamma=gamma,kernel='rbf')
-			scores.append(cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=['accuracy','precision_weighted','recall_weighted','f1_weighted'])	)
+			scores.append(cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring={'acc':'accuracy','prec':'precision_weighted','rec':'recall_weighted','f1':'f1_weighted'}))
 
-	acc = [s[0] for s in scores]
-	prec = [s[1] for s in scores]
-	rec = [s[2] for s in scores]
-	f1 = [s[3] for s in scores]
+	acc = [s['acc'] for s in scores]
+	prec = [s['prec'] for s in scores]
+	rec = [s['rec'] for s in scores]
+	f1 = [s['f1'] for s in scores]
 
 	index_of_best = np.argmax(acc)
 	best_c = c_values[int(index_of_best / len(c_values))]
