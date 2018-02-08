@@ -27,7 +27,7 @@ def split_test_validation(data,n_folds,fold_index):
 		train.append(data[i])
 	return train,validation
 
-def compute_accuracies(y,y_hat):
+def compute_accuracy(y,y_hat):
 	counter = 0
 	for v,pred in zip(y,y_hat):
 		if v == pred:
