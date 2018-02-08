@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV, KFold, cross
 from sklearn import metrics
 from sklearn.svm import SVC
 import matplotlib.pyplot as plt
-
+from collections import defaultdict
 
 #learn_hp.py config_file
 def main():
@@ -73,11 +73,14 @@ def main():
 	kf = KFold(n_splits=4,shuffle=True, random_state=10)
 	gamma_values = opt['gamma']
 	c_values = opt['C']
-	scores = []
+	dd = defaultdict(lambda:dd)
+	scores = dd()
+	score_param=['accuracy','precision_weighted','recall_weighted','f1_weighted']
 	for c in c_values:
 		for gamma in gamma_values:
-			classifier = SVC(C=c,gamma=gamma,kernel='rbf')
-			scores.append(cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring={'acc':'accuracy','prec':'precision_weighted','rec':'recall_weighted','f1':'f1_weighted'}))
+			for s in score_param:
+				classifier = SVC(C=c,gamma=gamma,kernel='rbf')
+				scores[c][gamma][s]=cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=s)
 
 	acc = [s['acc'] for s in scores]
 	prec = [s['prec'] for s in scores]
