@@ -163,9 +163,9 @@ def main():
 					curr_idx = get_batch(train_idxs,batch_size,j)
 					sess.run(train_opt,feed_dict={x:train_data[curr_idx],y:train_labels[curr_idx],keep_prob:0.5})
 
-		val_labels_hat = sess.run(predict,feed_dict={x:train_data[val_idxs],keep_prob:1})
-		val_labels = train_data[val_idxs]
-		accuracies.append(compute_accuracy(val_labels,val_labels_hat))
+			val_labels_hat = sess.run(predict,feed_dict={x:train_data[val_idxs],keep_prob:1})
+			val_labels = train_data[val_idxs]
+			accuracies.append(compute_accuracy(val_labels,val_labels_hat))
 
 	with open('log','w') as file:
 		file.write('Accuracy: ')

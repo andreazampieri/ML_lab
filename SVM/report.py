@@ -77,7 +77,7 @@ def main():
 	for c in c_values:
 		for gamma in gamma_values:
 			classifier = SVC(C=c,gamma=gamma,kernel='rbf')
-			scores.append(cross_val_score(clf,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=['accuracy','precision_weighted','recall_weighted','f1_weighted'])	)
+			scores.append(cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=['accuracy','precision_weighted','recall_weighted','f1_weighted'])	)
 
 	acc = [s[0] for s in scores]
 	prec = [s[1] for s in scores]
@@ -102,6 +102,13 @@ def main():
 	train_scores_std = np.std(train_scores, axis=1)
 	test_scores_mean = np.mean(test_scores, axis=1)
 	test_scores_std = np.std(test_scores, axis=1)
+	with open("plot",'w') as file:
+		file.write(train_sizes)
+		file.write('\n')
+		file.write(train_scores)
+
+		file.write('\n')
+		file.write(test_scores)
 	plt.plot(train_sizes, train_scores_mean, 'o-', color="r", label="learning_curve")
 
 	plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
