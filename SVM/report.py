@@ -81,6 +81,7 @@ def main():
 			for s in score_param:
 				classifier = SVC(C=c,gamma=gamma,kernel='rbf')
 				scores[c][gamma][s]=cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=s)
+				print('.')
 
 	acc = [s['acc'] for s in scores]
 	prec = [s['prec'] for s in scores]
