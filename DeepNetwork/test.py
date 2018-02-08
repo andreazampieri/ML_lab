@@ -1,26 +1,222 @@
+# import tensorflow as tf
+# import numpy as np
+
+# def one_hot_encoding(char):
+# 	ohe = [0]*26
+# 	ohe[ord(char)-ord('a')] = 1
+# 	return ohe
+
+
+# base_path = './'
+# train_data_path = base_path + 'train-data.csv'
+# train_labels_path = base_path + 'train-target.csv'
+# test_data_path = base_path + 'test-data.csv'
+# test_labels_path = base_path + 'test-target.csv'
+
+
+# with open(train_data_path,'r') as file:
+# 	train_data = []
+# 	for line in file:
+# 		train_data.append([int(_) for _ in line.strip().split(',')])
+
+# with open(train_labels_path,'r') as file:
+# 	train_labels = []
+# 	for line in file:
+# 		train_labels.append(one_hot_encoding(line.strip()))
+
+
+# with open(test_data_path,'r') as file:
+# 	test_data = []
+# 	for line in file:
+# 		test_data.append([int(_) for _ in line.strip().split(',')])
+
+# train_data = np.array(train_data)
+# train_labels = np.array(train_labels)
+# test_data = np.array(test_data)
+
+# x = tf.placeholder(tf.float32,[None,16*8])
+# x_rshp = tf.reshape(x,[-1,16,8,1])
+# y = tf.placeholder(tf.float32,[None,26])
+
+# w = tf.Variable(tf.random_normal([4,4,1,128]))
+# b = tf.Variable(tf.random_normal([128]))
+# conv1 = tf.nn.relu(tf.nn.conv2d(x_rshp,w,padding='SAME',strides=[1,1,1,1]) + b)
+# pool1 = tf.nn.max_pool(conv1,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
+
+# w = tf.Variable(tf.random_normal([4,4,128,256]))
+# b = tf.Variable(tf.random_normal([256]))
+# conv2 = tf.nn.relu(tf.nn.conv2d(pool1,w,padding='SAME',strides=[1,1,1,1]) + b)
+# pool2 = tf.nn.max_pool(conv2,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
+
+# flatten = tf.reshape(pool2,[-1,4*2*256])
+# w = tf.Variable(tf.random_normal([4*2*256,1024]))
+# b = tf.Variable(tf.random_normal([1024]))
+# fcl1= tf.nn.relu(tf.matmul(flatten,w)+b)
+
+# w = tf.Variable(tf.random_normal([1024,26]))
+# b = tf.Variable(tf.random_normal([26]))
+# output= tf.matmul(fcl1,w)+b
+
+# y_hat=tf.nn.softmax(output)
+# cross_entropy = tf.reduce_mean(-tf.reduce_sum(y * tf.log(y_hat), reduction_indices=[1]))
+# train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+# predict = tf.argmax(y_hat,1)
+
+# sess = tf.Session()
+# sess.run(global_variables_initializer())
+
+
+###########################################################################################ààà
+
 import tensorflow as tf
-from tensorflow.examples.tutorials.mnist import input_data
+import numpy as np
+from math import ceil
+import pandas as pd
 
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+def one_hot(letter):
+	value = [0]*26
+	value[ord(letter)-ord('a')] = 1
+	return value
 
-x = tf.placeholder(tf.float32,[None,784])
-W = tf.Variable(tf.zeros([784,10]))
-b = tf.Variable(tf.zeros([10]))
-y = tf.placeholder(tf.float32, [None, 10])
+def get_batch(data,index,batch_size):
+	dim = len(data)
+	
+	start = index * batch_size
+	finish = min((index+1)*batch_size,dim)
+	return data[start:finish]
 
-y_hat = tf.nn.softmax(tf.matmul(x,W)+b)
+def w_var(shape):
+	return tf.Variable(tf.truncated_normal(shape, stddev=0.1))
 
-cross_entropy = tf.reduce_mean(-tf.reduce_sum(y * tf.log(y_hat), reduction_indices=[1]))
-train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
+def b_var(shape):
+	return tf.Variable(tf.constant(0.1,shape=shape))
 
-sess = tf.InteractiveSession()
-tf.global_variables_initializer().run()
+def conv2d(x,w):
+	return tf.nn.conv2d(x,w,strides=[1,1,1,1],padding='SAME')
 
-for _ in range(1000):
-  batch_xs, batch_ys = mnist.train.next_batch(100)
-  sess.run(train_step, feed_dict={x: batch_xs, y: batch_ys})
+def max_pool_2x2(x):
+	return tf.nn.max_pool(x,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
 
+def main():
+	# reading input data
+	# 16x8 images, 1 channel [0,1]
+	
+	base_path = 'ocr/'
+	train_data_path = base_path + 'train-data.csv'
+	train_labels_path = base_path + 'train-targets.csv'
+	test_data_path = base_path + 'test-data.csv'
+	test_labels_path = base_path + 'test-targets.csv'
 
-correct_prediction = tf.equal(tf.argmax(y_hat, 1), tf.argmax(y, 1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-print(sess.run(accuracy, feed_dict={x: mnist.test.images, y: mnist.test.labels}))
+	print('Reading data')
+	train_data = np.genfromtxt(train_data_path, delimiter=',')
+	test_data = np.genfromtxt(test_data_path, delimiter=',')
+	train_labels = np.genfromtxt(train_labels_path, dtype=None, delimiter=',')
+	train_labels = pd.get_dummies(train_labels).values
+
+	train_data = np.array(train_data)
+	train_labels = np.array(train_labels)
+	test_data = np.array(test_data)
+
+	idxs = list(range(len(train_data)))
+
+	x = tf.placeholder(tf.float32,[None,16*8])
+	x_rshp = tf.reshape(x,[-1,16,8,1])
+
+	y = tf.placeholder(tf.float32,[None,26])
+
+	# first convolution:
+	# 	4x2 patches
+	# 	24 filters
+	
+	keep_prob = tf.placeholder(tf.float32)
+	patch_height = 4
+	patch_width = 4
+	conv1_nfeats = 128
+	conv1_w = w_var([patch_height,patch_width,1,conv1_nfeats])
+	conv1_b = b_var([conv1_nfeats])
+
+	#conv1 = tf.nn.relu(conv2d(x_rshp,conv1_w)+conv1_b)
+	conv1 = tf.nn.dropout(tf.nn.relu(conv2d(x_rshp,conv1_w)+conv1_b),keep_prob)
+	pool1 = max_pool_2x2(conv1)
+
+	# after the first pooling, the input has shape [batch_size, 8,4, conv1_nfeats]
+	# [,8,4,24]
+	patch_height = 4
+	patch_width = 4
+	conv2_nfeats = 256
+	conv2_w = w_var([patch_height,patch_width,conv1_nfeats,conv2_nfeats])
+	conv2_b = b_var([conv2_nfeats])
+
+	#conv2 = tf.nn.relu(conv2d(pool1,conv2_w)+conv2_b)
+	conv2 = tf.nn.dropout(tf.nn.relu(conv2d(pool1,conv2_w)+conv2_b),keep_prob)
+	pool2 = max_pool_2x2(conv2)
+	# pool2 has shape [,4,2,48]; 4*2*48 = 384
+	# 2 fully connected layers of size (resp) 100 and 26
+
+	fcl1_dim = 1024
+	fcl1_w = w_var([4*2*conv2_nfeats,fcl1_dim])
+	fcl1_b = b_var([fcl1_dim])
+
+	pool2_flat = tf.reshape(pool2,[-1,4*2*conv2_nfeats])
+	fcl1 = tf.nn.relu(tf.matmul(pool2_flat,fcl1_w)+fcl1_b)
+	dropout_fcl1 = tf.nn.dropout(fcl1,keep_prob)
+
+	# fcl2_w = w_var([fcl1_dim,26])
+	# fcl2_b = b_var([26])
+	fcl2_dim = 26
+	fcl2_w = w_var([fcl1_dim,fcl2_dim])
+	fcl2_b = b_var([fcl2_dim])
+	fcl2 = tf.nn.relu(tf.matmul(dropout_fcl1,fcl2_w)+fcl2_b)
+	dropout_fcl2 = tf.nn.dropout(fcl2,keep_prob)
+
+	output = tf.matmul(dropout_fcl1,fcl2_w) + fcl2_b
+	y_hat = tf.nn.softmax(output)
+	# fcl3_w = w_var([fcl2_dim,26])
+	# fcl3_b = b_var([26])
+	# output = tf.matmul(dropout_fcl2,fcl3_w) + fcl3_b
+	# y_hat = tf.nn.softmax(output)
+
+	#loss function and optimizer
+	cross_entropy = tf.reduce_mean(-tf.reduce_sum(y*tf.log(y_hat),reduction_indices=[1]))
+	train_opt = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+
+	correctness = tf.equal(tf.argmax(y_hat,1),tf.argmax(y,1))
+	accuracy = tf.reduce_mean(tf.cast(correctness,tf.float32))
+	predict = tf.argmax(y_hat,1)
+
+	# params for the execution
+	n_epochs = 15
+	batch_size = 200
+	batch_number = int(ceil(len(train_data)/batch_size))
+	sess = tf.Session()
+	sess.run(tf.global_variables_initializer())
+	for i in range(n_epochs):
+		print('Epoch: {}'.format(i))
+		np.random.shuffle(idxs)
+		for i in range(batch_number):
+			curr_idx = get_batch(idxs,i,batch_size)
+			sess.run(train_opt,feed_dict={x:train_data[curr_idx],y:train_labels[curr_idx],keep_prob:0.5})
+
+	# accuracy on training set
+	# for i in range(batch_number):
+	# 	curr_idx = get_batch(idxs,i,batch_size)
+	# 	print(sess.run(accuracy,feed_dict={x: train_data[curr_idx], y:train_labels[curr_idx], keep_prob: 0.5}))
+
+	results = []
+	idxs = list(range(len(test_data)))
+	batch_number = int(ceil(len(test_data)/batch_size))
+	# predict
+	# for i in range(batch_number):
+	# 	curr_idx = get_batch(idxs,i,batch_size)
+	# 	results.append(sess.run(predict,feed_dict={x:test_data[curr_idx],keep_prob:1}))
+	# with open(test_labels_path,'w') as file:
+	# 	for batch_res in results:
+	# 		for value in batch_res:
+	# 			file.write(chr(value+ord('a'))+'\n')
+	results = sess.run(predict,feed_dict={x:test_data,keep_prob:1})
+	with open(test_labels_path,'w') as file:
+		for value in results:
+			file.write(chr(value+ord('a'))+'\n')
+
+if __name__ == '__main__':
+	main()
