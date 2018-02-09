@@ -164,7 +164,7 @@ def main():
 					sess.run(train_opt,feed_dict={x:train_data[curr_idx],y:train_labels[curr_idx],keep_prob:0.5})
 
 			val_labels_hat = sess.run(predict,feed_dict={x:train_data[val_idxs],keep_prob:1})
-			val_labels = train_labels[val_idxs]
+			val_labels = [np.argmax(l) for l in train_labels[val_idxs]]
 			accuracies.append(compute_accuracy(val_labels,val_labels_hat))
 
 	with open('log','w') as file:
