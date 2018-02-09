@@ -83,7 +83,10 @@ def main():
 		for gamma in gamma_values:
 			for s in score_param:
 				classifier = SVC(C=c,gamma=gamma,kernel='rbf')
-				logfile.write(cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=s))
+				curr_score=cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=s))
+				for v in curr_score:
+					logfile.write(v)
+					logfile.write(', ')
 				logfile.write('\n')
 				print('.')
 
