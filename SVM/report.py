@@ -7,6 +7,7 @@ from sklearn.svm import SVC
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from pprint import pprint
+from time import time
 
 #learn_hp.py config_file
 def main():
@@ -82,13 +83,14 @@ def main():
 	for c in c_values:
 		for gamma in gamma_values:
 			for s in score_param:
+				ts = time()
 				classifier = SVC(C=c,gamma=gamma,kernel='rbf')
-				curr_score=cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=s))
+				curr_score=cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=s)
 				for v in curr_score:
 					logfile.write(v)
 					logfile.write(', ')
 				logfile.write('\n')
-				print('.')
+				print(time()-ts)
 
 	# acc = [s['acc'] for s in scores]
 	# prec = [s['prec'] for s in scores]
