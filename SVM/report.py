@@ -87,7 +87,7 @@ def main():
 				classifier = SVC(C=c,gamma=gamma,kernel='rbf')
 				curr_score=cross_val_score(classifier,train_data,train_labels,cv=kf.split(train_data),n_jobs=-1,scoring=s)
 				for v in curr_score:
-					logfile.write(v)
+					logfile.write(str(v))
 					logfile.write(', ')
 				logfile.write('\n')
 				print(time()-ts)
