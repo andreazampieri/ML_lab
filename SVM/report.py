@@ -9,6 +9,11 @@ from collections import defaultdict
 from pprint import pprint
 from time import time
 
+def arr_to_str(arr):
+	s = ""
+	for v in arr:
+		s += v +','
+
 #learn_hp.py config_file
 def main():
 	parser = argparse.ArgumentParser()
@@ -117,12 +122,12 @@ def main():
 	test_scores_mean = np.mean(test_scores, axis=1)
 	test_scores_std = np.std(test_scores, axis=1)
 	with open("plot",'w') as file:
-		file.write(train_sizes)
+		file.write(arr_to_str(train_sizes))
 		file.write('\n')
-		file.write(train_scores)
+		file.write(arr_to_str(train_scores))
 
 		file.write('\n')
-		file.write(test_scores)
+		file.write(arr_to_str(test_scores))
 	plt.plot(train_sizes, train_scores_mean, 'o-', color="r", label="learning_curve")
 
 	plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
@@ -162,6 +167,106 @@ def main():
 		file.write('test_labels_path:'+train_data_path+'\n')
 
 
+def inline():
+
+	base_path = 'sklearn-lab-material/ocr/'
+	train_data_path = base_path + 'train-data.csv'
+	train_labels_path = base_path + 'train-targets.csv'
+	test_data_path = base_path + 'test-data.csv'
+	results_path = base_path + 'test-targets.csv'
+
+	with open(train_data_path) as file:
+		train_data = []
+		for line in file:
+			train_data.append([float(_) for _ in line.strip().split(',')])
+
+	with open(train_labels_path) as file:
+		train_labels = []
+		for line in file:
+			train_labels.append(line.strip())
+
+	with open(test_data_path) as file:
+		test_data = []
+		for line in file:
+			test_data.append([float(_) for _ in line.strip().split(',')])
+
+	train_data = np.array(train_data)
+	train_labels = np.array(train_labels)
+	test_data = np.array(test_data)
+	best_c = 100
+	best_gamma = 0.1 
+	best_svc = SVC(C=best_c,gamma=best_gamma,kernel='rbf')
+
+	train_sizes, train_scores, test_scores = learning_curve(best_svc, train_data, train_labels, scoring='accuracy')
+
+
+	plt.figure()
+	plt.title("Learning curve")
+	plt.xlabel("Training examples")
+	plt.ylabel("Score")
+	plt.grid()
+	train_scores_mean = np.mean(train_scores, axis=1)
+	train_scores_std = np.std(train_scores, axis=1)
+	test_scores_mean = np.mean(test_scores, axis=1)
+	test_scores_std = np.std(test_scores, axis=1)
+	with open("plot",'w') as file:
+		file.write(train_sizes)
+		file.write('\n')
+		file.write(train_scores)
+
+		file.write('\n')
+		file.write(test_scores)
+	plt.plot(train_sizes, train_scores_mean, 'o-', color="r", label="learning_curve")
+
+	plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
+	                 train_scores_mean + train_scores_std, alpha=0.1, color="r")
+
+
+	plt.plot(train_sizes, test_scores_mean, 'o-', color="g", label="Cross-validation score")
+
+	plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
+	                 test_scores_mean + test_scores_std, alpha=0.1, color="g")
+
+	plt.legend()
+	plt.show()
+	quit()
+
+def stats():
+	c_values=[1,10,100]
+	gamma_values=[0.1,0.2,0.3]
+	score_param=['accuracy','precision_weighted','recall_weighted','f1_weighted']
+	scores={'accuracy':[],'precision_weighted':[],'recall_weighted':[],'f1_weighted':[]}
+	with open('log_scores','r') as file:
+		for c in c_values:
+			for gamma in gamma_values:
+				for s in score_param:
+					scores[s].append([float(_) for _ in file.readline().strip().split(',')[:-1]])
+	acc =[]
+	for a in scores['accuracy']:
+		acc.append(np.mean(a))
+
+	prec = []
+	for p in scores['precision_weighted']:
+		prec.append(np.mean(p))
+
+	rec = []
+	for r in scores['recall_weighted']:
+		rec.append(np.mean(r))
+
+	f1 = []
+	for f in scores['f1_weighted']:
+		f1.append(np.mean(f))
+
+	with open('stats','w') as file:
+		for i in range(len(c_values)):
+			for j in range(len(gamma_values)):
+				idx = i*len(gamma_values)+j
+				file.write(c_values[i]+','+gamma_values[j]+','+acc[idx]+','+prec[idx]','+rec[idx]','+f1[idx])
+
+					
+		
 
 if __name__ == '__main__':
-	main()
+	#main()
+	#inline()
+	stats()
