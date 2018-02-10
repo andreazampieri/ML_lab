@@ -261,7 +261,7 @@ def stats():
 		for i in range(len(c_values)):
 			for j in range(len(gamma_values)):
 				idx = i*len(gamma_values)+j
-				file.write(c_values[i]+','+gamma_values[j]+','+acc[idx]+','+prec[idx]','+rec[idx]','+f1[idx])
+				file.write(c_values[i]+','+gamma_values[j]+','+acc[idx]+','+prec[idx]+','+rec[idx]+','+f1[idx])
 
 					
 		
