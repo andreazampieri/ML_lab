@@ -153,6 +153,10 @@ def main():
 	# 		for value in batch_res:
 	# 			file.write(chr(value+ord('a'))+'\n')
 	results = sess.run(predict,feed_dict={x:test_data,keep_prob:1})
+	with open('raw_res','w') as file:
+		for value in results:
+			file.write(str(value))
+			file.write('\n')
 	with open(test_labels_path,'w') as file:
 		for value in results:
 			file.write(chr(value+ord('a'))+'\n')
