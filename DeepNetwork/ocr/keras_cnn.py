@@ -75,7 +75,6 @@ for i in range(epochs):
 	val_accuracy = compute_accuracy(targets[idxs[:cut]],pred)
 	print('\ttrain_accuracy: {}\tval_accuracy: {}'.format(train_accuracy,val_accuracy))
 
-model.save_model('keras_model.h5')
 
 test_data = []
 with open(test_data_path,'r') as file:
@@ -89,3 +88,4 @@ with open('results_keras.dat','w') as file:
 	for value in y_pred:
 		file.write(get_char(np.argmax(value))+'\n')
 
+model.save('keras_model.h5')
