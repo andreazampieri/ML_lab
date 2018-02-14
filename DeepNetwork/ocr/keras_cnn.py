@@ -1,7 +1,7 @@
 import keras
 from keras.models import Sequential
 from keras.layers.convolutional import Conv2D, MaxPooling2D
-from keras.layers.core import Activation, Flatten, Dense
+from keras.layers.core import Activation, Flatten, Dense,Dropout
 from keras import backend as K
 import numpy as np
 
