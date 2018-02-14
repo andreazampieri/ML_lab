@@ -51,7 +51,7 @@ targets= np.array(targets)
 
 
 model.compile(loss='categorical_crossentropy',optimizer='adam')
-model.fit(input_data,targets,epochs=15,batch_size=400)
+model.fit(input_data,targets,epochs=3,batch_size=100)
 
 test_data = []
 with open(test_data_path,'r') as file:
