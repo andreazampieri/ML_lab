@@ -65,7 +65,7 @@ for i in range(iterations):
 	batch_x = np.array(batch_x)
 	batch_y = np.array(batch_y)
 
-	model.train_on_batch(batch_x,batch_y,epochs=1)
+	model.train_on_batch(batch_x,batch_y)
 
 test_data = []
 with open(test_data_path,'r') as file:
