@@ -60,7 +60,7 @@ targets= np.array(targets)
 model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 #model.fit(input_data,targets,epochs=250,batch_size=2048,validation_split=0.2)
 idxs = np.array(range(len(input_data)))
-validation_split = 0.2
+validation_split = 0.15
 cut = int(validation_split*len(input_data))
 epochs = 70
 
@@ -71,9 +71,8 @@ for i in range(epochs):
 
 	#accuracy
 	pred = model.predict(input_data[idxs[:cut]])
-	train_accuracy = compute_accuracy(targets[idxs[cut:]],model.predict(input_data[idxs[cut:]]))
 	val_accuracy = compute_accuracy(targets[idxs[:cut]],pred)
-	print('\ttrain_accuracy: {}\tval_accuracy: {}'.format(train_accuracy,val_accuracy))
+	print('\tval_accuracy: {}'.format(val_accuracy))
 
 
 test_data = []
