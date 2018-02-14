@@ -71,7 +71,6 @@ for i in range(epochs):
 
 	#accuracy
 	pred = model.predict(input_data[idxs[:cut]])
-	print(pred.shape)
 	accuracy = compute_accuracy(targets[idxs[:cut]],pred)
 	print('\tval_accuracy: {}'.format(accuracy))
 
