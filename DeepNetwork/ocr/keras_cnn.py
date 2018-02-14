@@ -50,7 +50,7 @@ with open(target_path,'r') as file:
 targets= np.array(targets)
 
 model.compile(loss='categorical_crossentropy',optimizer='adam')
-model.fit(input_data,targets,epochs=250,batch_size=2048)
+model.fit(input_data,targets,epochs=250,batch_size=2048,validation_split=0.2)
 
 test_data = []
 with open(test_data_path,'r') as file:
