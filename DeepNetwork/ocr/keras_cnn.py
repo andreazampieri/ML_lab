@@ -67,7 +67,7 @@ epochs = 250
 for i in range(epochs):
 	np.random.shuffle(idxs)
 	print('Epoch: {}'.format(i))
-	model.fit(input_data[idxs[cut:]],targets[idxs[cut:]],batch_size = 2048,epochs=1,verbose=0)
+	model.fit(input_data[idxs[cut:]],targets[idxs[cut:]],batch_size = 300,epochs=1,verbose=1)
 
 	#accuracy
 	pred = model.predict(input_data[idxs[:cut]])
