@@ -58,7 +58,7 @@ for i in range(iterations):
 	batch_x = []
 	batch_y = []
 	for j in range(batch_size):
-		index = np.random.random(len(input_data))
+		index = np.random.randint(len(input_data))
 		batch_x.append(input_data[index])
 		batch_y.append(targets[index])
 
