@@ -71,8 +71,9 @@ for i in range(epochs):
 
 	#accuracy
 	pred = model.predict(input_data[idxs[:cut]])
-	accuracy = compute_accuracy(targets[idxs[:cut]],pred)
-	print('\tval_accuracy: {}'.format(accuracy))
+	train_accuracy = compute_accuracy(targets[idxs[cut:]],model.predict(input_data[idxs[cut:]]))
+	val_accuracy = compute_accuracy(targets[idxs[:cut]],pred)
+	print('\ttrain_accuracy: {}\tval_accuracy: {}'.format(train_accuracy,val_accuracy))
 
 test_data = []
 with open(test_data_path,'r') as file:
