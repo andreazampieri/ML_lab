@@ -52,7 +52,7 @@ targets= np.array(targets)
 model.compile(loss='categorical_crossentropy',optimizer='adam')
 #model.fit(input_data,targets,epochs=50,batch_size=100)
 
-iterations = 10
+iterations = 20
 batch_size = 300
 for i in range(iterations):
 	batch_x = []
