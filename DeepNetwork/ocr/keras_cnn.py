@@ -49,7 +49,7 @@ model.fit(input_data,targets,epochs=15,batch_size=400)
 test_data = []
 with open(test_data_path,'r') as file:
 	for line in file:
-		test_data.append([int(_) for _ in line.strip().split(',')])
+		test_data.append(rshp([int(_) for _ in line.strip().split(',')]))
 
 test_data = np.array(test_data)
 y_pred = model.predict(test_data)
