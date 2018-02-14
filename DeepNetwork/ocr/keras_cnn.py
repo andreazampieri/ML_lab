@@ -62,7 +62,7 @@ model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accurac
 idxs = np.array(range(len(input_data)))
 validation_split = 0.2
 cut = int(validation_split*len(input_data))
-epochs = 250
+epochs = 70
 
 for i in range(epochs):
 	np.random.shuffle(idxs)
