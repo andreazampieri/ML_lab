@@ -59,7 +59,7 @@ epochs = 250
 for i in range(epochs):
 	np.random.shuffle(idxs)
 	print('Epoch: {}'.format(i))
-	model.fit(input_data[idxs[cut:]],targets[idxs[cut:]],batch_size = 2048)
+	model.fit(input_data[idxs[cut:]],targets[idxs[cut:]],batch_size = 2048,epochs=1,verbose=0)
 
 	#accuracy
 	accuracy = K.mean(K.equal(K.argmax(targets[idxs[:cut]], axis=-1), K.argmax(model.predict(input_data[idxs[:cut]], axis=-1))))
