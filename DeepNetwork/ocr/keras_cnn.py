@@ -16,6 +16,14 @@ def rshp(img):
 def get_char(v):
 	return chr(v+ord('a'))
 
+def compute_accuracy(y,y_hat):
+	counter = 0
+	for value,pred in zip(y,y_hat):
+		if np.argmax(value) == np.argmax(pred):
+			counter += 1
+	return float(counter)/len(y)
+
+
 model = Sequential([
 	Conv2D(64,(4,4),padding="same",input_shape=(16,8,1)),
 	Activation("relu"),
@@ -62,7 +70,9 @@ for i in range(epochs):
 	model.fit(input_data[idxs[cut:]],targets[idxs[cut:]],batch_size = 2048,epochs=1,verbose=0)
 
 	#accuracy
-	accuracy = K.mean(K.equal(K.argmax(targets[idxs[:cut]], axis=-1), K.argmax(model.predict(input_data[idxs[:cut]], axis=-1))))
+	pred = model.predict(input_data[idxs[:cut]])
+	print(pred.shape)
+	accuracy = compute_accuracy(targets[idxs[:cut]],pred)
 	print('\tval_accuracy: {}'.format(accuracy))
 
 test_data = []
