@@ -49,9 +49,23 @@ with open(target_path,'r') as file:
 		targets.append(one_hot(line.strip()))
 targets= np.array(targets)
 
-
 model.compile(loss='categorical_crossentropy',optimizer='adam')
-model.fit(input_data,targets,epochs=50,batch_size=100)
+#model.fit(input_data,targets,epochs=50,batch_size=100)
+
+iterations = 10
+batch_size = 300
+for i in range(iterations):
+	batch_x = []
+	batch_y = []
+	for j in range(batch_size):
+		index = np.random.random(len(input_data))
+		batch_x.append(input_data[index])
+		batch_y.append(targets[index])
+
+	batch_x = np.array(batch_x)
+	batch_y = np.array(batch_y)
+
+	model.fit(batch_x,batch_y)
 
 test_data = []
 with open(test_data_path,'r') as file:
