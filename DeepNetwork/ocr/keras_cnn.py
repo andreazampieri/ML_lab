@@ -17,11 +17,15 @@ def get_char(v):
 	return chr(v+ord('a'))
 
 model = Sequential([
-	Conv2D(32,(4,4),padding="same",input_shape=(16,8,1)),
+	Conv2D(64,(4,4),padding="same",input_shape=(16,8,1)),
 	Activation("relu"),
 	MaxPooling2D(pool_size=(2,2),strides=(2,2)),
+	Conv2D(128,(4,4),padding="same"),
+	Activation("relu")
 	Flatten(),
-	Dense(500),
+	Dense(1024),
+	Activation("relu")
+	Dense(512),
 	Activation("relu"),
 	Dense(26),
 	Activation("softmax")])
@@ -35,14 +39,14 @@ with open(input_path,'r') as file:
 	for line in file:
 		input_data.append(rshp([int(_) for _ in line.strip().split(',')]))
 input_data = np.array(input_data)
-print(input_data.shape)
 		
 targets = []
 with open(target_path,'r') as file:
 	for line in file:
 		targets.append(one_hot(line.strip()))
 targets= np.array(targets)
-print(targets.shape)
+
+
 model.compile(loss='categorical_crossentropy',optimizer='adam')
 model.fit(input_data,targets,epochs=15,batch_size=400)
 
