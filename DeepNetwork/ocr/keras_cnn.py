@@ -50,7 +50,20 @@ with open(target_path,'r') as file:
 targets= np.array(targets)
 
 model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
-model.fit(input_data,targets,epochs=250,batch_size=2048,validation_split=0.2)
+#model.fit(input_data,targets,epochs=250,batch_size=2048,validation_split=0.2)
+idxs = np.array(range(len(input_data)))
+validation_split = 0.2
+cut = int(validation_split*len(input_data))
+epochs = 250
+
+for i in range(epochs):
+	np.random.shuffle(idxs)
+	print('Epoch: {}'.format(i))
+	model.fit(input_data[idxs[cut:]],targets[idxs[cut:]],batch_size = 2048)
+
+	#accuracy
+	accuracy = K.mean(K.equal(K.argmax(targets[idxs[:cut]], axis=-1), K.argmax(model.predict(input_data[idxs[:cut]], axis=-1))))
+	print('\tval_accuracy: {}'.format(accuracy))
 
 test_data = []
 with open(test_data_path,'r') as file:
