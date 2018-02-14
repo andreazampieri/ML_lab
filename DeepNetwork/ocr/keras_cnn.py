@@ -26,8 +26,10 @@ model = Sequential([
 	Flatten(),
 	Dense(1024),
 	Activation("relu"),
+	Dropout(0.5),
 	Dense(512),
 	Activation("relu"),
+	Dropout(0.5),
 	Dense(26),
 	Activation("softmax")])
 
