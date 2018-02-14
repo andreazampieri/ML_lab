@@ -25,7 +25,7 @@ model = Sequential([
 	MaxPooling2D(pool_size=(2,2),strides=(2,2)),
 	Flatten(),
 	Dense(1024),
-	Activation("relu")
+	Activation("relu"),
 	Dense(512),
 	Activation("relu"),
 	Dense(26),
