@@ -2,13 +2,13 @@ import keras
 from keras.models import load_model
 import numpy as np
 
+def rshp(img):
+	return np.array(img).reshape((16,8,1))
+
 def one_hot(char):
 	oh = [0]*26
 	oh[ord(char)-ord('a')] = 1
 	return np.array(oh)
-
-def rshp(img):
-	return np.array(img).reshape((16,8,1))
 
 def get_char(v):
 	return chr(v+ord('a'))
@@ -37,7 +37,22 @@ with open(target_path,'r') as file:
 		targets.append(one_hot(line.strip()))
 targets= np.array(targets)
 
+test_data = []
+with open(test_data_path,'r') as file:
+	for line in file:
+		test_data.append(rshp([int(_) for _ in line.strip().split(',')]))
+test_data = np.array(test_data)
+
 
 model = load_model('keras_model.h5')
 
 print(compute_accuracy(model.predict(input_data),targets))
+
+pred = model.predict(test_data)
+with open('raw_res.dat','w') as file:
+	for v in pred:
+		file.write(str(v)+'\n')
+
+with open('results_keras.dat','w') as file:
+	for v in pred:
+		file.write(get_char(np.argmax(v))+'\n')
