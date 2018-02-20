@@ -123,6 +123,11 @@ def main():
 	accuracy = tf.reduce_mean(tf.cast(correctness,tf.float32))
 	predict = tf.argmax(y_hat,1)
 
+	cut =int(0.2*len(train_data))
+	np.random.shuffle(idxs)
+	train_idxs = idxs[cut:]
+	val_idxs = idxs[:cut]
+
 	# params for the execution
 	n_epochs = 60
 	batch_size = 400
@@ -131,10 +136,11 @@ def main():
 	sess.run(tf.global_variables_initializer())
 	for i in range(n_epochs):
 		print('Epoch: {}'.format(i))
-		np.random.shuffle(idxs)
+		np.random.shuffle(train_idxs)
 		for j in range(batch_number):
-			curr_idx = get_batch(idxs,j,batch_size)
+			curr_idx = get_batch(train_idxs,j,batch_size)
 			sess.run(train_opt,feed_dict={x:train_data[curr_idx],y:train_labels[curr_idx],keep_prob:0.5})
+		print(sess.run(accuracy,feed_dict={x: train_data[val_idxs], y:train_labels[val_idxs], keep_prob: 0.5}))
 
 	# accuracy on training set
 	# for i in range(batch_number):
