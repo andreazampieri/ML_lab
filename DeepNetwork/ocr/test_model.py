@@ -47,12 +47,3 @@ test_data = np.array(test_data)
 model = load_model('keras_model.h5')
 
 print(compute_accuracy(model.predict(input_data),targets))
-
-pred = model.predict(test_data)
-with open('raw_res.dat','w') as file:
-	for v in pred:
-		file.write(str(v)+'\n')
-
-with open('results_keras.dat','w') as file:
-	for v in pred:
-		file.write(get_char(np.argmax(v))+'\n')
