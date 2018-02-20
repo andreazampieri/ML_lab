@@ -63,15 +63,18 @@ idxs = np.array(range(len(input_data)))
 validation_split = 0.15
 cut = int(validation_split*len(input_data))
 epochs = 70
+np.random.shuffle(idxs)
+train_idxs = idxs[cut:]
+val_idxs = idxs[:cut]
 
 for i in range(epochs):
-	np.random.shuffle(idxs)
+	np.random.shuffle(train_idxs)
 	print('Epoch: {}'.format(i))
-	model.fit(input_data[idxs[cut:]],targets[idxs[cut:]],batch_size = 300,epochs=1,verbose=1)
+	model.fit(input_data[train_idxs],targets[train_idxs],batch_size = 300,epochs=1,verbose=1)
 
 	#accuracy
-	pred = model.predict(input_data[idxs[:cut]])
-	val_accuracy = compute_accuracy(targets[idxs[:cut]],pred)
+	pred = model.predict(input_data[val_idxs])
+	val_accuracy = compute_accuracy(targets[val_idxs],pred)
 	print('\tval_accuracy: {}'.format(val_accuracy))
 
 
