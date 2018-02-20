@@ -25,10 +25,10 @@ def compute_accuracy(y,y_hat):
 
 
 model = Sequential([
-	Conv2D(64,(4,4),padding="same",input_shape=(16,8,1)),
+	Conv2D(64,(3,3),padding="same",input_shape=(16,8,1)),
 	Activation("relu"),
 	MaxPooling2D(pool_size=(2,2),strides=(2,2)),
-	Conv2D(128,(4,4),padding="same"),
+	Conv2D(128,(3,3),padding="same"),
 	Activation("relu"),
 	MaxPooling2D(pool_size=(2,2),strides=(2,2)),
 	Flatten(),
