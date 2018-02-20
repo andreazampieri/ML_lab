@@ -35,9 +35,6 @@ model = Sequential([
 	Dense(1024),
 	Activation("relu"),
 	Dropout(0.5),
-	Dense(512),
-	Activation("relu"),
-	Dropout(0.5),
 	Dense(26),
 	Activation("softmax")])
 
@@ -58,7 +55,9 @@ with open(target_path,'r') as file:
 targets= np.array(targets)
 
 model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
-#model.fit(input_data,targets,epochs=250,batch_size=2048,validation_split=0.2)
+model.fit(input_data,targets,epochs=70,batch_size=300,validation_split=0.2)
+
+'''
 idxs = np.array(range(len(input_data)))
 validation_split = 0.15
 cut = int(validation_split*len(input_data))
@@ -76,7 +75,7 @@ for i in range(epochs):
 	pred = model.predict(input_data[val_idxs])
 	val_accuracy = compute_accuracy(targets[val_idxs],pred)
 	print('\tval_accuracy: {}'.format(val_accuracy))
-
+'''
 
 test_data = []
 with open(test_data_path,'r') as file:
