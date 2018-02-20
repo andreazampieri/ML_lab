@@ -132,8 +132,8 @@ def main():
 	for i in range(n_epochs):
 		print('Epoch: {}'.format(i))
 		np.random.shuffle(idxs)
-		for i in range(batch_number):
-			curr_idx = get_batch(idxs,i,batch_size)
+		for j in range(batch_number):
+			curr_idx = get_batch(idxs,j,batch_size)
 			sess.run(train_opt,feed_dict={x:train_data[curr_idx],y:train_labels[curr_idx],keep_prob:0.5})
 
 	# accuracy on training set
