@@ -22,7 +22,7 @@ def PredictBatch(data,indx,win):
 
 X = np.genfromtxt('train-data.csv', delimiter=',')
 P = np.genfromtxt('test-data.csv', delimiter=',')
-T = np.genfromtxt('train-target.csv', dtype=None, delimiter=',')
+T = np.genfromtxt('train-targets.csv', dtype=None, delimiter=',')
 Y = pd.get_dummies(T).values
 
 sess = tf.InteractiveSession()
